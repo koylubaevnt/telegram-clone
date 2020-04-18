@@ -15,6 +15,7 @@ import com.google.telegram.ui.fragments.ChatsFragment
 import com.google.telegram.ui.objects.AppDrawer
 import com.google.telegram.utilits.*
 import com.theartofdev.edmodo.cropper.CropImage
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -48,11 +49,29 @@ class MainActivity : AppCompatActivity() {
                 val uri = result.uri
                 val path = REF_STORAGE_ROOT.child(FOLDER_PROFILE_IMAGE)
                     .child(CURRENT_UID)
-                path.putFile(uri).addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        showToast(getString(R.string.toast_data_updated))
+                path.putFile(uri).addOnCompleteListener { task1 ->
+                    if (task1.isSuccessful) {
+                        path.downloadUrl.addOnCompleteListener { task2 ->
+                            if (task2.isSuccessful) {
+                                val photoUrl = task2.result.toString()
+                                REF_DATABASE_ROOT.child(NODE_USERS)
+                                    .child(CURRENT_UID)
+                                    .child(CHILD_PHOTO_URL)
+                                    .setValue(photoUrl)
+                                    .addOnCompleteListener {
+                                        if (it.isSuccessful) {
+                                            showToast(getString(R.string.toast_data_updated))
+                                            USER.photoUrl = photoUrl
+                                        } else {
+                                            showToast(task2.exception?.message.toString())
+                                        }
+                                    }
+                            } else {
+                                showToast(task2.exception?.message.toString())
+                            }
+                        }
                     } else {
-                        showToast(it.exception?.message.toString())
+                        showToast(task1.exception?.message.toString())
                     }
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
