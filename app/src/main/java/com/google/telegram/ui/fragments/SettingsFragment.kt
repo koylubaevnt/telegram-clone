@@ -8,6 +8,7 @@ import android.view.MenuItem
 import com.google.telegram.R
 import com.google.telegram.activities.RegisterActivity
 import com.google.telegram.utilits.*
+import com.squareup.picasso.Picasso
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -39,6 +40,7 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
                                     .setValue(photoUrl)
                                     .addOnCompleteListener {
                                         if (it.isSuccessful) {
+                                            settings_user_photo.downloadAndSetImage(photoUrl)
                                             showToast(getString(R.string.toast_data_updated))
                                             USER.photoUrl = photoUrl
                                         } else {
