@@ -1,11 +1,6 @@
 package com.google.telegram
 
-import android.R.attr
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.telegram.activities.RegisterActivity
@@ -14,8 +9,6 @@ import com.google.telegram.models.User
 import com.google.telegram.ui.fragments.ChatsFragment
 import com.google.telegram.ui.objects.AppDrawer
 import com.google.telegram.utilits.*
-import com.theartofdev.edmodo.cropper.CropImage
-import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,61 +21,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
-    }
-
-    override fun onStart() {
-        super.onStart()
         APP_ACTIVITY = this
         initFields()
         initFunc()
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            val result = CropImage.getActivityResult(data)
-            if (resultCode == Activity.RESULT_OK) {
-                val uri = result.uri
-                val path = REF_STORAGE_ROOT.child(FOLDER_PROFILE_IMAGE)
-                    .child(CURRENT_UID)
-                path.putFile(uri).addOnCompleteListener { task1 ->
-                    if (task1.isSuccessful) {
-                        path.downloadUrl.addOnCompleteListener { task2 ->
-                            if (task2.isSuccessful) {
-                                val photoUrl = task2.result.toString()
-                                REF_DATABASE_ROOT.child(NODE_USERS)
-                                    .child(CURRENT_UID)
-                                    .child(CHILD_PHOTO_URL)
-                                    .setValue(photoUrl)
-                                    .addOnCompleteListener {
-                                        if (it.isSuccessful) {
-                                            showToast(getString(R.string.toast_data_updated))
-                                            USER.photoUrl = photoUrl
-                                        } else {
-                                            showToast(task2.exception?.message.toString())
-                                        }
-                                    }
-                            } else {
-                                showToast(task2.exception?.message.toString())
-                            }
-                        }
-                    } else {
-                        showToast(task1.exception?.message.toString())
-                    }
-                }
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                showToast(result.error.message.toString())
-            }
-        }
-    }
-
-    fun hideKeyboard() {
-        val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(window.decorView.windowToken, 0)
     }
 
     private fun initFunc() {
