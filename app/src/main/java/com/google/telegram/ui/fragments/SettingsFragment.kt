@@ -35,6 +35,7 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
                             settings_user_photo.downloadAndSetImage(it)
                             showToast(getString(R.string.toast_data_updated))
                             USER.photoUrl = it
+                            APP_ACTIVITY.mAppDrawer.updateHeader()
                         }
                     }
                 }
@@ -59,7 +60,9 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
         settings_change_user_photo.setOnClickListener {
             changePhotoUser()
         }
-        settings_user_photo.downloadAndSetImage(USER.photoUrl)
+        if (USER.photoUrl.isNotEmpty()) {
+            settings_user_photo.downloadAndSetImage(USER.photoUrl)
+        }
     }
 
     private fun changePhotoUser() {
