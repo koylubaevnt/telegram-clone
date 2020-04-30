@@ -49,7 +49,7 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
         settings_bio.text = USER.bio
         settings_full_name.text = USER.fullname
         settings_phone_number.text = USER.phone
-        settings_status.text = USER.status
+        settings_status.text = USER.state
         settings_username.text = USER.username
         settings_btn_change_username.setOnClickListener {
             replaceFragment(ChangeUserNameFragment())
@@ -60,9 +60,7 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
         settings_change_user_photo.setOnClickListener {
             changePhotoUser()
         }
-        if (USER.photoUrl.isNotEmpty()) {
-            settings_user_photo.downloadAndSetImage(USER.photoUrl)
-        }
+        settings_user_photo.downloadAndSetImage(USER.photoUrl)
     }
 
     private fun changePhotoUser() {
