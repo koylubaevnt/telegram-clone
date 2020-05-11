@@ -35,36 +35,22 @@ class EnterCodeFragment(val phoneNumber: String, val id: String) :
                 dateMap[CHILD_PHONE] = phoneNumber
                 dateMap[CHILD_USERNAME] = uid
 
-                REF_DATABASE_ROOT.child(NODE_USERS).child(uid).updateChildren(dateMap)
-                    .addOnCompleteListener { task2 ->
-                        if (task2.isSuccessful) {
-                            showToast("Добро пожаловать")
-                            (activity as RegisterActivity).replaceActivity(MainActivity())
-                        } else showToast(task2.exception?.message.toString())
+
+                REF_DATABASE_ROOT.child(NODE_PHONES).child(phoneNumber)
+                    .setValue(uid)
+                    .addOnFailureListener { showToast(it.message.toString()) }
+                    .addOnSuccessListener { task2 ->
+                        REF_DATABASE_ROOT.child(NODE_USERS).child(uid)
+                            .updateChildren(dateMap)
+                            .addOnSuccessListener {
+                                showToast("Добро пожаловать")
+                                (activity as RegisterActivity).replaceActivity(MainActivity())
+                            }
+                            .addOnFailureListener {
+                                showToast(it.message.toString())
+                            }
                     }
             } else showToast(task.exception?.message.toString())
         }
-//private fun enterCode(code: String) {
-//val credential = PhoneAuthProvider.getCredential(id, code)
-//                AUTH.signInWithCredential(credential)
-//            .addOnCompleteListener {task ->
-//                if (task.isSuccessful) {
-//                    val uid = AUTH.currentUser?.uid.toString()
-//                    val dataMap = mutableMapOf<String, Any>()
-//                    dataMap[CHILD_ID] = uid
-//                    dataMap[CHILD_PHONE] = phoneNumber
-//                    dataMap[CHILD_USERNAME] = uid
-//
-//                    REF_DATABASE_ROOT.child(NODE_USERS)
-//                        .child(uid)
-//                        .updateChildren(dataMap)
-//                        .addOnCompleteListener { task2 ->
-//                            if (task2.isSuccessful) {
-//                                showToast("Добро пожаловать")
-//                                (activity as RegisterActivity).replaceActivity(MainActivity())
-//                            } else showToast(task2.exception?.message.toString())
-//                        }
-//                } else showToast(task.exception?.message.toString())
-//            }
     }
 }
