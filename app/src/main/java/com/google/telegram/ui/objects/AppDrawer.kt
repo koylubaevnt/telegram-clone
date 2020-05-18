@@ -4,8 +4,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.telegram.R
 import com.google.telegram.ui.fragments.ContactFragment
@@ -25,7 +23,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
 
-class AppDrawer() {
+class AppDrawer {
 
     private lateinit var mDrawer: Drawer
 
@@ -170,7 +168,7 @@ class AppDrawer() {
     }
 
     private fun initLoader() {
-        DrawerImageLoader.init(object: AbstractDrawerImageLoader() {
+        DrawerImageLoader.init(object : AbstractDrawerImageLoader() {
             override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable) {
                 imageView.downloadAndSetImage(uri.toString())
             }
