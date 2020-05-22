@@ -6,7 +6,7 @@
     tools:context=".ui.fragments.ChatsFragment">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/text_view"
         android:textColor="@color/colorBlack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
