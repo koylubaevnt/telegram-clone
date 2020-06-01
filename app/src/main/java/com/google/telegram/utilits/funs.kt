@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import com.google.telegram.R
 import com.google.telegram.models.CommonModel
 import com.squareup.picasso.Picasso
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun showToast(message: String) {
     Toast.makeText(APP_ACTIVITY, message, Toast.LENGTH_SHORT).show()
@@ -52,7 +54,8 @@ fun Fragment.replaceFragment(fragment: Fragment) {
 }
 
 fun hideKeyboard() {
-    val imm: InputMethodManager = APP_ACTIVITY.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    val imm: InputMethodManager =
+        APP_ACTIVITY.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(APP_ACTIVITY.window.decorView.windowToken, 0)
 }
 
@@ -77,8 +80,10 @@ fun initContacts() {
         )
         cursor?.let {
             while (it.moveToNext()) {
-                val fullName = it.getString(it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
-                val phone = it.getString(it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                val fullName =
+                    it.getString(it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+                val phone =
+                    it.getString(it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
                 val newModel = CommonModel()
                 newModel.fullname = fullName
                 newModel.phone = phone.replace(Regex("[\\s,-]"), "")
@@ -89,4 +94,10 @@ fun initContacts() {
 
         updatePhonesToDatabase(arrayContacts)
     }
+}
+
+fun String.asTime(): String {
+    val time = Date(this.toLong())
+    val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    return timeFormat.format(time)
 }
