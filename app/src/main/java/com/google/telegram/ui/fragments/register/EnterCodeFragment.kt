@@ -1,10 +1,9 @@
-package com.google.telegram.ui.fragments
+package com.google.telegram.ui.fragments.register
 
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.PhoneAuthProvider
-import com.google.telegram.MainActivity
 import com.google.telegram.R
-import com.google.telegram.activities.RegisterActivity
+import com.google.telegram.database.*
 import com.google.telegram.utilits.*
 import kotlinx.android.synthetic.main.fragment_enter_code.*
 
@@ -14,7 +13,7 @@ class EnterCodeFragment(val phoneNumber: String, val id: String) :
 
     override fun onStart() {
         super.onStart()
-        (activity as RegisterActivity).title = phoneNumber
+        APP_ACTIVITY.title = phoneNumber
         register_input_code.addTextChangedListener(AppTextWatcher {
             val string = register_input_code.text.toString()
             if (string.length == 6) {
@@ -36,15 +35,19 @@ class EnterCodeFragment(val phoneNumber: String, val id: String) :
                 dateMap[CHILD_USERNAME] = uid
 
 
-                REF_DATABASE_ROOT.child(NODE_PHONES).child(phoneNumber)
+                REF_DATABASE_ROOT.child(
+                    NODE_PHONES
+                ).child(phoneNumber)
                     .setValue(uid)
                     .addOnFailureListener { showToast(it.message.toString()) }
                     .addOnSuccessListener { task2 ->
-                        REF_DATABASE_ROOT.child(NODE_USERS).child(uid)
+                        REF_DATABASE_ROOT.child(
+                            NODE_USERS
+                        ).child(uid)
                             .updateChildren(dateMap)
                             .addOnSuccessListener {
                                 showToast("Добро пожаловать")
-                                (activity as RegisterActivity).replaceActivity(MainActivity())
+                                restartActivity()
                             }
                             .addOnFailureListener {
                                 showToast(it.message.toString())

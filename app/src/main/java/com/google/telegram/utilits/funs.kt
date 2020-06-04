@@ -6,9 +6,10 @@ import android.provider.ContactsContract
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.telegram.MainActivity
 import com.google.telegram.R
+import com.google.telegram.database.updatePhonesToDatabase
 import com.google.telegram.models.CommonModel
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
@@ -18,15 +19,15 @@ fun showToast(message: String) {
     Toast.makeText(APP_ACTIVITY, message, Toast.LENGTH_SHORT).show()
 }
 
-fun AppCompatActivity.replaceActivity(activity: AppCompatActivity) {
-    val intent = Intent(this, activity::class.java)
-    startActivity(intent)
-    this.finish()
+fun restartActivity() {
+    val intent = Intent(APP_ACTIVITY, MainActivity::class.java)
+    APP_ACTIVITY.startActivity(intent)
+    APP_ACTIVITY.finish()
 }
 
-fun AppCompatActivity.replaceFragment(fragment: Fragment, addStack: Boolean = true) {
+fun replaceFragment(fragment: Fragment, addStack: Boolean = true) {
     if (addStack) {
-        supportFragmentManager.beginTransaction()
+        APP_ACTIVITY.supportFragmentManager.beginTransaction()
             .addToBackStack(null)
             .replace(
                 R.id.data_container,
@@ -34,7 +35,7 @@ fun AppCompatActivity.replaceFragment(fragment: Fragment, addStack: Boolean = tr
             )
             .commit()
     } else {
-        supportFragmentManager.beginTransaction()
+        APP_ACTIVITY.supportFragmentManager.beginTransaction()
             .replace(
                 R.id.data_container,
                 fragment
@@ -43,15 +44,6 @@ fun AppCompatActivity.replaceFragment(fragment: Fragment, addStack: Boolean = tr
     }
 }
 
-fun Fragment.replaceFragment(fragment: Fragment) {
-    fragmentManager?.beginTransaction()
-        ?.addToBackStack(null)
-        ?.replace(
-            R.id.data_container,
-            fragment
-        )
-        ?.commit()
-}
 
 fun hideKeyboard() {
     val imm: InputMethodManager =

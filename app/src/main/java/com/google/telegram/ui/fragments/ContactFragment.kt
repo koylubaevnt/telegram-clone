@@ -9,6 +9,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.telegram.R
+import com.google.telegram.database.*
 import com.google.telegram.models.CommonModel
 import com.google.telegram.ui.fragments.singlechat.SingleChatFragment
 import com.google.telegram.utilits.*
@@ -41,7 +42,9 @@ class ContactFragment : BaseFragment(R.layout.fragment_contact) {
 
     private fun initRecycleView() {
         mRecycleView = contact_recycle_view
-        mRefContacts = REF_DATABASE_ROOT.child(NODE_PHONES_CONTACTS).child(CURRENT_UID)
+        mRefContacts = REF_DATABASE_ROOT.child(
+            NODE_PHONES_CONTACTS
+        ).child(CURRENT_UID)
 
         val options = FirebaseRecyclerOptions.Builder<CommonModel>()
             .setQuery(mRefContacts, CommonModel::class.java)
@@ -59,7 +62,9 @@ class ContactFragment : BaseFragment(R.layout.fragment_contact) {
                 position: Int,
                 model: CommonModel
             ) {
-                mRefUsers = REF_DATABASE_ROOT.child(NODE_USERS).child(model.id)
+                mRefUsers = REF_DATABASE_ROOT.child(
+                    NODE_USERS
+                ).child(model.id)
 
                 mRefUsersListener = AppValueEventListener {
                     val contact = it.getCommonModel()

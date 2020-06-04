@@ -5,9 +5,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import com.google.telegram.activities.RegisterActivity
+import com.google.telegram.database.AUTH
+import com.google.telegram.database.initFirebase
+import com.google.telegram.database.initUser
 import com.google.telegram.databinding.ActivityMainBinding
-import com.google.telegram.ui.fragments.ChatsFragment
+import com.google.telegram.ui.fragments.MainFragment
+import com.google.telegram.ui.fragments.register.EnterPhoneNumberFragment
 import com.google.telegram.ui.objects.AppDrawer
 import com.google.telegram.utilits.*
 import kotlinx.coroutines.CoroutineScope
@@ -49,8 +52,7 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
+        grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (ContextCompat.checkSelfPermission(
                 APP_ACTIVITY,
@@ -62,12 +64,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initFunc() {
+        setSupportActionBar(mToolbar)
         if (AUTH.currentUser != null) {
-            setSupportActionBar(mToolbar)
             mAppDrawer.create()
-            replaceFragment(ChatsFragment(), false)
+            replaceFragment(MainFragment(), false)
         } else {
-            replaceActivity(RegisterActivity())
+            replaceFragment(EnterPhoneNumberFragment(), false)
         }
 
     }

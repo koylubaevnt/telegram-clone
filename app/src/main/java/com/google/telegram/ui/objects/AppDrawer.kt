@@ -9,7 +9,7 @@ import com.google.telegram.R
 import com.google.telegram.ui.fragments.ContactFragment
 import com.google.telegram.ui.fragments.SettingsFragment
 import com.google.telegram.utilits.APP_ACTIVITY
-import com.google.telegram.utilits.USER
+import com.google.telegram.database.USER
 import com.google.telegram.utilits.downloadAndSetImage
 import com.google.telegram.utilits.replaceFragment
 import com.mikepenz.materialdrawer.AccountHeader
@@ -137,8 +137,8 @@ class AppDrawer {
 
     private fun clickToItem(identifier: Long) {
         when (identifier) {
-            106L -> APP_ACTIVITY.replaceFragment(SettingsFragment())
-            103L -> APP_ACTIVITY.replaceFragment(ContactFragment())
+            106L -> replaceFragment(SettingsFragment())
+            103L -> replaceFragment(ContactFragment())
         }
 
     }
