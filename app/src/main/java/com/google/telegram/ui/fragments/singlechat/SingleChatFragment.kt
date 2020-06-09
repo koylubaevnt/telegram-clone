@@ -3,9 +3,7 @@ package com.google.telegram.ui.fragments.singlechat
 import android.view.View
 import android.widget.AbsListView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.database.DatabaseReference
 import com.google.telegram.R
 import com.google.telegram.database.*
@@ -20,6 +18,9 @@ import kotlinx.android.synthetic.main.toolbar_info.view.*
 class SingleChatFragment(private val contact: CommonModel) :
     BaseFragment(R.layout.fragment_single_chat) {
 
+    private val MESSAGE_COUNT = 3
+
+
     private lateinit var mListenerInfoToolbar: AppValueEventListener
     private lateinit var mReceivingUser: UserModel
     private lateinit var mToolbarInfo: View
@@ -28,10 +29,10 @@ class SingleChatFragment(private val contact: CommonModel) :
     private lateinit var mAdapter: SingleChatAdapter
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mMessagesListener: AppChildEventListener
-    private var mCountMessages = 10
+    private var mCountMessages = MESSAGE_COUNT
     private var mIsScrolling = false
     private var mSmoothScrollToPosition = true
-    private var mListListener = mutableListOf<AppChildEventListener>()
+    private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
 
     override fun onResume() {
         super.onResume()
@@ -40,6 +41,7 @@ class SingleChatFragment(private val contact: CommonModel) :
     }
 
     private fun initRecyclerView() {
+        mSwipeRefreshLayout = chat_swipe_refresh
         mRecyclerView = chat_recycle_view
         mAdapter = SingleChatAdapter()
         mRefMessages = REF_DATABASE_ROOT
@@ -48,21 +50,22 @@ class SingleChatFragment(private val contact: CommonModel) :
             .child(contact.id)
         mRecyclerView.adapter = mAdapter
         mMessagesListener = AppChildEventListener {
-            mAdapter.addItem(it.getCommonModel())
-            if (mSmoothScrollToPosition) {
-                mRecyclerView.smoothScrollToPosition(mAdapter.itemCount)
+            mAdapter.addItem(it.getCommonModel(), mSmoothScrollToPosition) {
+                if (mSmoothScrollToPosition) {
+                    mRecyclerView.smoothScrollToPosition(mAdapter.itemCount)
+                }
+                mSwipeRefreshLayout.isRefreshing = false
             }
         }
         mRefMessages.limitToLast(mCountMessages).addChildEventListener(mMessagesListener)
-        mListListener.add(mMessagesListener)
 
-        mRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener(){
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (mIsScrolling && dy < 0) {
-                    updateData()
-                }
-            }
+        mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                if (mIsScrolling && dy < 0) {
+//                    updateData()
+//                }
+//            }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -71,14 +74,22 @@ class SingleChatFragment(private val contact: CommonModel) :
                 }
             }
         })
+
+        mSwipeRefreshLayout.setOnRefreshListener {
+            updateData()
+        }
     }
 
     private fun updateData() {
-        mSmoothScrollToPosition = false
-        mIsScrolling = false
-        mCountMessages += 10
-        mRefMessages.limitToLast(mCountMessages).addChildEventListener(mMessagesListener)
-        mListListener.add(mMessagesListener)
+        if (mAdapter.itemCount >= mCountMessages) {
+            mSmoothScrollToPosition = false
+            mIsScrolling = false
+            mCountMessages += MESSAGE_COUNT
+            mRefMessages.removeEventListener(mMessagesListener)
+            mRefMessages.limitToLast(mCountMessages).addChildEventListener(mMessagesListener)
+        } else {
+            mSwipeRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun initToolbar() {
@@ -125,8 +136,6 @@ class SingleChatFragment(private val contact: CommonModel) :
         super.onPause()
         mToolbarInfo.visibility = View.GONE
         mRefUser.removeEventListener(mListenerInfoToolbar)
-        mListListener.forEach {
-            mRefMessages.removeEventListener(it)
-        }
+        mRefMessages.removeEventListener(mMessagesListener)
     }
 }
