@@ -190,6 +190,7 @@ class SingleChatFragment(private val contact: CommonModel) :
                 putImageToStorage(uri, path) {
                     getUrlFromStorage(path) {
                         sendMessageAsImage(contact.id, it, messageKey)
+                        mSmoothScrollToPosition = true
                     }
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
