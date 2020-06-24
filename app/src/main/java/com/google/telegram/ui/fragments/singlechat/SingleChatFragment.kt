@@ -87,7 +87,6 @@ class SingleChatFragment(private val contact: CommonModel) :
             chat_btn_voice.setOnTouchListener { v, event ->
                 if (checkPermission(RECORD_AUDIO)) {
                     if (event.action == MotionEvent.ACTION_DOWN) {
-                        // TODO: record
                         chat_input_message.setText("Запись")
                         chat_btn_voice.setColorFilter(
                             ContextCompat.getColor(
@@ -98,11 +97,11 @@ class SingleChatFragment(private val contact: CommonModel) :
                         val messageKey = getMessageKey(contact.id)
                         mAppVoiceRecorder.startRecord(messageKey)
                     } else if (event.action == MotionEvent.ACTION_UP) {
-                        //TODO: stop record
                         chat_input_message.setText("")
                         chat_btn_voice.colorFilter = null
                         mAppVoiceRecorder.stopRecord { file, messageKey ->
-                            uploadFileToStorage(Uri.fromFile(file), messageKey)
+                            uploadFileToStorage(Uri.fromFile(file), messageKey, contact.id, TYPE_MESSAGE_VOICE)
+                            mSmoothScrollToPosition = true
                         }
                     }
                 }
@@ -226,16 +225,8 @@ class SingleChatFragment(private val contact: CommonModel) :
                 val uri = result.uri
                 val messageKey = getMessageKey(contact.id)
 
-                val path = REF_STORAGE_ROOT
-                    .child(FOLDER_MESSAGES_IMAGE)
-                    .child(messageKey)
-
-                putImageToStorage(uri, path) {
-                    getUrlFromStorage(path) {
-                        sendMessageAsImage(contact.id, it, messageKey)
-                        mSmoothScrollToPosition = true
-                    }
-                }
+                uploadFileToStorage(uri, messageKey, contact.id, TYPE_MESSAGE_IMAGE)
+                mSmoothScrollToPosition = true
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 showToast(result.error.message.toString())
             }

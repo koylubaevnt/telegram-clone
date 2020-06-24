@@ -31,7 +31,7 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
                 )
                     .child(CURRENT_UID)
 
-                putImageToStorage(uri, path) {
+                putFileToStorage(uri, path) {
                     getUrlFromStorage(path) {
                         putUrlToDatabase(it) {
                             settings_user_photo.downloadAndSetImage(it)
