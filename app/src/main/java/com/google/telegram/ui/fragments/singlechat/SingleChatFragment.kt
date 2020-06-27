@@ -16,6 +16,7 @@ import com.google.telegram.database.*
 import com.google.telegram.models.CommonModel
 import com.google.telegram.models.UserModel
 import com.google.telegram.ui.fragments.BaseFragment
+import com.google.telegram.ui.fragments.messagerecyclerview.views.AppViewFactory
 import com.google.telegram.utilits.*
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_main.view.*
@@ -131,11 +132,11 @@ class SingleChatFragment(private val contact: CommonModel) :
         mMessagesListener = AppChildEventListener {
             val message = it.getCommonModel()
             if (mSmoothScrollToPosition) {
-                mAdapter.addItemToBottom(message) {
+                mAdapter.addItemToBottom(AppViewFactory.getView(message)) {
                     mRecyclerView.smoothScrollToPosition(mAdapter.itemCount)
                 }
             } else {
-                mAdapter.addItemToTop(message) {
+                mAdapter.addItemToTop(AppViewFactory.getView(message)) {
                     mSwipeRefreshLayout.isRefreshing = false
                 }
             }
