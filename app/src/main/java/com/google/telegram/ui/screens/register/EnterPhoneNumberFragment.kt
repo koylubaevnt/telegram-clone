@@ -1,4 +1,4 @@
-package com.google.telegram.ui.fragments.register
+package com.google.telegram.ui.screens.register
 
 import androidx.fragment.app.Fragment
 import com.google.firebase.FirebaseException

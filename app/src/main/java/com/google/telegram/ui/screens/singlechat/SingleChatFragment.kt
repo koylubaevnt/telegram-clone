@@ -1,4 +1,4 @@
-package com.google.telegram.ui.fragments.singlechat
+package com.google.telegram.ui.screens.singlechat
 
 import android.app.Activity
 import android.content.Intent
@@ -15,8 +15,8 @@ import com.google.telegram.R
 import com.google.telegram.database.*
 import com.google.telegram.models.CommonModel
 import com.google.telegram.models.UserModel
-import com.google.telegram.ui.fragments.BaseFragment
-import com.google.telegram.ui.fragments.messagerecyclerview.views.AppViewFactory
+import com.google.telegram.ui.screens.BaseFragment
+import com.google.telegram.ui.messagerecyclerview.views.AppViewFactory
 import com.google.telegram.utilits.*
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_main.view.*
@@ -58,9 +58,10 @@ class SingleChatFragment(private val contact: CommonModel) :
         mRefMessages.removeEventListener(mMessagesListener)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         mAppVoiceRecorder.releaseRecorder()
+        mAdapter.onDestroy()
     }
 
     private fun initFields() {

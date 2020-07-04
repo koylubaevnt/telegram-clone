@@ -1,4 +1,4 @@
-package com.google.telegram.ui.fragments.messagerecyclerview.views
+package com.google.telegram.ui.messagerecyclerview.views
 
 import com.google.telegram.models.CommonModel
 import com.google.telegram.utilits.TYPE_MESSAGE_IMAGE
@@ -21,7 +21,7 @@ class AppViewFactory {
                     message.timestamp.toString(),
                     message.fileUrl
                 )
-                else -> TextMessageView (
+                else -> TextMessageView(
                     message.id,
                     message.from,
                     message.timestamp.toString(),

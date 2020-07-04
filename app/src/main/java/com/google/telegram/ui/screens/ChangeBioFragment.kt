@@ -1,8 +1,7 @@
-package com.google.telegram.ui.fragments
+package com.google.telegram.ui.screens
 
 import com.google.telegram.R
 import com.google.telegram.database.*
-import com.google.telegram.utilits.*
 import kotlinx.android.synthetic.main.fragment_change_bio.*
 
 class ChangeBioFragment : BaseChangeFragment(R.layout.fragment_change_bio) {

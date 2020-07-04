@@ -1,4 +1,4 @@
-package com.google.telegram.ui.fragments
+package com.google.telegram.ui.screens
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.telegram.R
 import com.google.telegram.database.*
 import com.google.telegram.models.CommonModel
-import com.google.telegram.ui.fragments.singlechat.SingleChatFragment
+import com.google.telegram.ui.screens.singlechat.SingleChatFragment
 import com.google.telegram.utilits.*
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.contact_item.view.*

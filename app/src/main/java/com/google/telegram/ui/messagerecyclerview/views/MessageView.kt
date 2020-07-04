@@ -1,4 +1,4 @@
-package com.google.telegram.ui.fragments.messagerecyclerview.views
+package com.google.telegram.ui.messagerecyclerview.views
 
 interface MessageView {
 

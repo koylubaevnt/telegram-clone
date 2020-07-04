@@ -9,8 +9,8 @@ import com.google.telegram.database.AUTH
 import com.google.telegram.database.initFirebase
 import com.google.telegram.database.initUser
 import com.google.telegram.databinding.ActivityMainBinding
-import com.google.telegram.ui.fragments.MainFragment
-import com.google.telegram.ui.fragments.register.EnterPhoneNumberFragment
+import com.google.telegram.ui.screens.MainFragment
+import com.google.telegram.ui.screens.register.EnterPhoneNumberFragment
 import com.google.telegram.ui.objects.AppDrawer
 import com.google.telegram.utilits.*
 import kotlinx.coroutines.CoroutineScope

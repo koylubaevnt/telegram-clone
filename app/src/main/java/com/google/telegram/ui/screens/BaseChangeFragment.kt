@@ -1,4 +1,4 @@
-package com.google.telegram.ui.fragments;
+package com.google.telegram.ui.screens;
 
 import android.view.Menu
 import android.view.MenuInflater
