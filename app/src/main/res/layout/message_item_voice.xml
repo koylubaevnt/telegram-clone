@@ -9,16 +9,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/block_user_voice_message"
-        android:layout_width="@dimen/chat_voice_width"
-        android:layout_height="@dimen/chat_voice_height"
+        android:layout_width="@dimen/chat_common_width"
+        android:layout_height="@dimen/chat_common_height"
         android:background="@drawable/bg_user_message"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
             android:id="@+id/chat_user_btn_play"
-            android:layout_width="@dimen/btn_voice_width"
-            android:layout_height="@dimen/btn_voice_height"
+            android:layout_width="@dimen/chat_btn_width"
+            android:layout_height="@dimen/chat_btn_height"
             android:src="@drawable/ic_play_green"
             android:contentDescription="@string/play"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,8 +27,8 @@
 
         <ImageView
             android:id="@+id/chat_user_btn_stop"
-            android:layout_width="@dimen/btn_voice_width"
-            android:layout_height="@dimen/btn_voice_height"
+            android:layout_width="@dimen/chat_btn_width"
+            android:layout_height="@dimen/chat_btn_height"
             android:src="@drawable/ic_stop_green"
             android:contentDescription="@string/stop"
             android:visibility="gone"
@@ -51,16 +51,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/block_receiving_voice_message"
-        android:layout_width="@dimen/chat_voice_width"
-        android:layout_height="@dimen/chat_voice_height"
+        android:layout_width="@dimen/chat_common_width"
+        android:layout_height="@dimen/chat_common_height"
         android:background="@drawable/bg_receiving_message"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
             android:id="@+id/chat_receiving_btn_play"
-            android:layout_width="@dimen/btn_voice_width"
-            android:layout_height="@dimen/btn_voice_height"
+            android:layout_width="@dimen/chat_btn_width"
+            android:layout_height="@dimen/chat_btn_height"
             android:src="@drawable/ic_play_blue"
             android:contentDescription="@string/play"
             app:layout_constraintStart_toStartOf="parent"
@@ -69,8 +69,8 @@
 
         <ImageView
             android:id="@+id/chat_receiving_btn_stop"
-            android:layout_width="@dimen/btn_voice_width"
-            android:layout_height="@dimen/btn_voice_height"
+            android:layout_width="@dimen/chat_btn_width"
+            android:layout_height="@dimen/chat_btn_height"
             android:src="@drawable/ic_stop_blue"
             android:contentDescription="@string/stop"
             android:visibility="gone"

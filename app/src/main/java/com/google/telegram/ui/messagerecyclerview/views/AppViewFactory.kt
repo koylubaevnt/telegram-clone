@@ -1,6 +1,7 @@
 package com.google.telegram.ui.messagerecyclerview.views
 
 import com.google.telegram.models.CommonModel
+import com.google.telegram.utilits.TYPE_MESSAGE_FILE
 import com.google.telegram.utilits.TYPE_MESSAGE_IMAGE
 import com.google.telegram.utilits.TYPE_MESSAGE_VOICE
 
@@ -20,6 +21,13 @@ class AppViewFactory {
                     message.from,
                     message.timestamp.toString(),
                     message.fileUrl
+                )
+                TYPE_MESSAGE_FILE -> VoiceMessageView(
+                    message.id,
+                    message.from,
+                    message.timestamp.toString(),
+                    message.fileUrl,
+                    message.text
                 )
                 else -> TextMessageView(
                     message.id,

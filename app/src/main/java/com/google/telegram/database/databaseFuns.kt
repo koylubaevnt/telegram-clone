@@ -214,7 +214,8 @@ fun sendMessageAsFile(
     receivingUserId: String,
     fileUrl: String,
     messageKey: String,
-    typeMessage: String
+    typeMessage: String,
+    fileName: String
 ) {
 
     val refDialogUser = "$NODE_MESSAGES/$CURRENT_UID/$receivingUserId"
@@ -228,6 +229,7 @@ fun sendMessageAsFile(
     mapMessage[CHILD_TIMESTAMP] =
         ServerValue.TIMESTAMP
     mapMessage[CHILD_FILE_URL] = fileUrl
+    mapMessage[CHILD_TEXT] = fileName
 
     val mapDialog = hashMapOf<String, Any>()
     mapDialog["$refDialogUser/$messageKey"] = mapMessage
@@ -245,7 +247,7 @@ fun getMessageKey(id: String): String {
         .push().key.toString()
 }
 
-fun uploadFileToStorage(uri: Uri, messageKey: String, receivedId: String, typeMessage: String) {
+fun uploadFileToStorage(uri: Uri, messageKey: String, receivedId: String, typeMessage: String, fileName: String = "") {
     val path = REF_STORAGE_ROOT
         .child(FOLDER_FILES)
         .child(messageKey)
@@ -256,7 +258,8 @@ fun uploadFileToStorage(uri: Uri, messageKey: String, receivedId: String, typeMe
                 receivedId,
                 it,
                 messageKey,
-                typeMessage
+                typeMessage,
+                fileName
             )
         }
     }
