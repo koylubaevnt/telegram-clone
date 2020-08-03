@@ -7,7 +7,7 @@ import android.widget.ImageView
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.telegram.R
 import com.google.telegram.ui.screens.ContactFragment
-import com.google.telegram.ui.screens.SettingsFragment
+import com.google.telegram.ui.screens.settings.SettingsFragment
 import com.google.telegram.utilits.APP_ACTIVITY
 import com.google.telegram.database.USER
 import com.google.telegram.utilits.downloadAndSetImage

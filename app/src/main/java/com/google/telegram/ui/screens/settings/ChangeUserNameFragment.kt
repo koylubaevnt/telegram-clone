@@ -1,7 +1,8 @@
-package com.google.telegram.ui.screens
+package com.google.telegram.ui.screens.settings
 
 import com.google.telegram.R
 import com.google.telegram.database.*
+import com.google.telegram.ui.screens.BaseChangeFragment
 import com.google.telegram.utilits.*
 import kotlinx.android.synthetic.main.fragment_change_user_name.*
 

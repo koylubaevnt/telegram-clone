@@ -1,4 +1,4 @@
-package com.google.telegram.ui.screens
+package com.google.telegram.ui.screens.settings
 
 import android.app.Activity
 import android.content.Intent
@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import com.google.telegram.R
 import com.google.telegram.database.*
+import com.google.telegram.ui.screens.BaseFragment
 import com.google.telegram.utilits.*
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView

@@ -1,13 +1,15 @@
 package com.google.telegram.ui.screens.mainlist
 
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.telegram.R
 import com.google.telegram.database.*
 import com.google.telegram.models.CommonModel
-import com.google.telegram.utilits.APP_ACTIVITY
-import com.google.telegram.utilits.AppValueEventListener
-import com.google.telegram.utilits.hideKeyboard
+import com.google.telegram.ui.screens.settings.ChangeNameFragment
+import com.google.telegram.utilits.*
 import kotlinx.android.synthetic.main.fragment_main_list.*
 
 class MainListFragment : Fragment(R.layout.fragment_main_list) {
@@ -30,6 +32,7 @@ class MainListFragment : Fragment(R.layout.fragment_main_list) {
     }
 
     private fun initRecyclerView() {
+        setHasOptionsMenu(true)
         mRecyclerView = main_list_recycle_view
         mAdapter = MainListAdapter()
 
@@ -54,4 +57,15 @@ class MainListFragment : Fragment(R.layout.fragment_main_list) {
         mRecyclerView.adapter = mAdapter
     }
 
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        activity?.menuInflater?.inflate(R.menu.single_chat_action_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+
+        }
+        return true
+    }
 }
