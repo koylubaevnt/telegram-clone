@@ -3,8 +3,7 @@ package com.google.telegram.ui.screens.singlechat
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.widget.AbsListView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +17,7 @@ import com.google.telegram.models.CommonModel
 import com.google.telegram.models.UserModel
 import com.google.telegram.ui.screens.BaseFragment
 import com.google.telegram.ui.messagerecyclerview.views.AppViewFactory
+import com.google.telegram.ui.screens.mainlist.MainListFragment
 import com.google.telegram.utilits.*
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_main.view.*
@@ -266,5 +266,23 @@ class SingleChatFragment(private val contact: CommonModel) :
                 }
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        activity?.menuInflater?.inflate(R.menu.single_chat_action_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_clear_chat -> clearChat(contact.id) {
+                showToast("Чат очищен")
+                replaceFragment(MainListFragment())
+            }
+            R.id.menu_delete_chat -> deleteChat(contact.id) {
+                showToast("Чат удален")
+                replaceFragment(MainListFragment())
+            }
+        }
+        return true
     }
 }

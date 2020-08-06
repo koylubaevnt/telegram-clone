@@ -1,15 +1,13 @@
 package com.google.telegram.ui.screens.mainlist
 
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.telegram.R
 import com.google.telegram.database.*
 import com.google.telegram.models.CommonModel
-import com.google.telegram.ui.screens.settings.ChangeNameFragment
-import com.google.telegram.utilits.*
+import com.google.telegram.utilits.APP_ACTIVITY
+import com.google.telegram.utilits.AppValueEventListener
+import com.google.telegram.utilits.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_main_list.*
 
 class MainListFragment : Fragment(R.layout.fragment_main_list) {
@@ -36,36 +34,24 @@ class MainListFragment : Fragment(R.layout.fragment_main_list) {
         mRecyclerView = main_list_recycle_view
         mAdapter = MainListAdapter()
 
-        mRefMainList.addListenerForSingleValueEvent(AppValueEventListener {mainListDS ->
+        mRefMainList.addListenerForSingleValueEvent(AppValueEventListener { mainListDS ->
             mListItems = mainListDS.children.map { it.getCommonModel() }
             mListItems.forEach { model ->
-                mRefUsers.child(model.id).addListenerForSingleValueEvent(AppValueEventListener {userDS ->
-                    val newModel = userDS.getCommonModel()
-                    mRefMessages.child(model.id).limitToLast(1)
-                        .addListenerForSingleValueEvent(AppValueEventListener {messageDS ->
-                            val tempList = messageDS.children.map { it.getCommonModel() }
-                            newModel.lastMessage = tempList[0].text
-                            if (newModel.fullname.isEmpty()) {
-                                newModel.fullname = newModel.phone
-                            }
-                            mAdapter.updateListItems(newModel)
-                        })
-                })
+                mRefUsers.child(model.id)
+                    .addListenerForSingleValueEvent(AppValueEventListener { userDS ->
+                        val newModel = userDS.getCommonModel()
+                        mRefMessages.child(model.id).limitToLast(1)
+                            .addListenerForSingleValueEvent(AppValueEventListener { messageDS ->
+                                val tempList = messageDS.children.map { it.getCommonModel() }
+                                if (tempList.isNotEmpty()) {
+                                    newModel.fullname = newModel.phone
+                                }
+                                mAdapter.updateListItems(newModel)
+                            })
+                    })
             }
         })
 
         mRecyclerView.adapter = mAdapter
-    }
-
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        activity?.menuInflater?.inflate(R.menu.single_chat_action_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-
-        }
-        return true
     }
 }
