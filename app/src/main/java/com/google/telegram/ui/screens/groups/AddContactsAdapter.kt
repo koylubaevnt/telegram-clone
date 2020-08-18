@@ -7,10 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.telegram.R
 import com.google.telegram.models.CommonModel
-import com.google.telegram.ui.screens.singlechat.SingleChatFragment
 import com.google.telegram.utilits.downloadAndSetImage
-import com.google.telegram.utilits.replaceFragment
-import com.google.telegram.utilits.showToast
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.add_contacts_item.view.*
 
@@ -26,8 +23,10 @@ class AddContactsAdapter : RecyclerView.Adapter<AddContactsAdapter.AddContactsHo
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddContactsHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.add_contacts_item, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.add_contacts_item, parent, false)
         val holder = AddContactsHolder(view)
+
         holder.itemView.setOnClickListener {
             if (listItems[holder.adapterPosition].choice) {
                 holder.itemChoice.visibility = View.INVISIBLE

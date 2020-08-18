@@ -5,10 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.telegram.R
 import com.google.telegram.database.*
 import com.google.telegram.models.CommonModel
-import com.google.telegram.utilits.APP_ACTIVITY
-import com.google.telegram.utilits.AppValueEventListener
-import com.google.telegram.utilits.hideKeyboard
-import com.google.telegram.utilits.showToast
+import com.google.telegram.utilits.*
 import kotlinx.android.synthetic.main.fragment_add_contacts.*
 import kotlinx.android.synthetic.main.fragment_main_list.*
 
@@ -24,16 +21,14 @@ class AddContactsFragment : Fragment(R.layout.fragment_add_contacts) {
 
     override fun onResume() {
         super.onResume()
-        APP_ACTIVITY.title = "Добавить участников"
+        APP_ACTIVITY.title = getString(R.string.add_contacts)
         APP_ACTIVITY.mAppDrawer.enableDrawer()
         hideKeyboard()
 
         initRecyclerView()
 
         add_contacts_btn_next.setOnClickListener {
-            listContacts.forEach {
-                println(it.id)
-            }
+            replaceFragment(CreateGroupFragment(listContacts))
         }
     }
 

@@ -32,4 +32,6 @@
     <string name="download">download</string>
     <string name="clear_chat">Очистить чат</string>
     <string name="delete_chat">Удалить чат</string>
+    <string name="create_group">Создать группу</string>
+    <string name="add_contacts">Добавить участников</string>
 </resources>
