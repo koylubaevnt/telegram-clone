@@ -15,7 +15,7 @@ import com.google.telegram.R
 import com.google.telegram.database.*
 import com.google.telegram.models.CommonModel
 import com.google.telegram.models.UserModel
-import com.google.telegram.ui.screens.BaseFragment
+import com.google.telegram.ui.screens.base.BaseFragment
 import com.google.telegram.ui.messagerecyclerview.views.AppViewFactory
 import com.google.telegram.ui.screens.mainlist.MainListFragment
 import com.google.telegram.utilits.*

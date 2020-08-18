@@ -1,4 +1,4 @@
-package com.google.telegram.ui.screens
+package com.google.telegram.ui.screens.base
 
 import androidx.fragment.app.Fragment
 import com.google.telegram.utilits.APP_ACTIVITY
