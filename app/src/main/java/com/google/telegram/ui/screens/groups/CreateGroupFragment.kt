@@ -5,6 +5,7 @@ import com.google.telegram.R
 import com.google.telegram.models.CommonModel
 import com.google.telegram.ui.screens.base.BaseFragment
 import com.google.telegram.utilits.APP_ACTIVITY
+import com.google.telegram.utilits.getPlurals
 import com.google.telegram.utilits.hideKeyboard
 import com.google.telegram.utilits.showToast
 import kotlinx.android.synthetic.main.fragment_create_group.*
@@ -18,7 +19,6 @@ class CreateGroupFragment(private var listContacts: List<CommonModel>) :
     override fun onResume() {
         super.onResume()
         APP_ACTIVITY.title = getString(R.string.create_group)
-        APP_ACTIVITY.mAppDrawer.enableDrawer()
         hideKeyboard()
 
         initRecyclerView()
@@ -27,6 +27,7 @@ class CreateGroupFragment(private var listContacts: List<CommonModel>) :
             showToast("Click")
         }
         create_group_input_name.requestFocus()
+        create_group_counts.text = getPlurals(listContacts.size)
     }
 
 

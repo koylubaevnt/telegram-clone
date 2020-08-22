@@ -28,7 +28,7 @@
         android:layout_margin="@dimen/app_margin" />
 
     <TextView
-        android:id="@+id/create_group_account"
+        android:id="@+id/create_group_counts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimary"
@@ -44,7 +44,7 @@
         android:layout_height="0dp"
         tools:listitem="@layout/main_list_item"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/create_group_account"
+        app:layout_constraintTop_toBottomOf="@id/create_group_counts"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 

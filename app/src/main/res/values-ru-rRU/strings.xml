@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Telegram</string>
+    <string name="app_name">Телеграм</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="settings_default_username">Ivan Ivanov</string>
