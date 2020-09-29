@@ -322,3 +322,41 @@ fun clearChat(id: String, function: () -> Unit) {
                 .addOnSuccessListener { function() }
         }
 }
+
+fun createGroupToDatabase(
+    nameGroup: String,
+    uri: Uri,
+    listContacts: List<CommonModel>,
+    function: () -> Unit
+) {
+    val keyGroup = REF_DATABASE_ROOT.child(NODE_GROUPS).push().key.toString()
+    val path = REF_DATABASE_ROOT.child(NODE_GROUPS).child(keyGroup)
+    val pathStorage = REF_STORAGE_ROOT.child(FOLDER_GROUPS_IMAGE).child(keyGroup)
+
+
+    val mapData = hashMapOf<String, Any>()
+    mapData[CHILD_ID] = keyGroup
+    mapData[CHILD_FULL_NAME] = nameGroup
+
+    val mapMembers = hashMapOf<String, Any>()
+    listContacts.forEach {
+        mapMembers[it.id] = USER_MEMBER
+    }
+    mapMembers[CURRENT_UID] = USER_CREATOR
+
+    mapData[CHILD_MEMBER] = mapMembers
+
+    path.updateChildren(mapData)
+        .addOnSuccessListener {
+            if (uri != Uri.EMPTY) {
+                putFileToStorage(uri, pathStorage) {
+                    getUrlFromStorage(pathStorage) {
+                        path.child(CHILD_FILE_URL).setValue(it)
+                    }
+                }
+            }
+            function()
+        }
+        .addOnFailureListener { showToast(it.message.toString()) }
+}
+
