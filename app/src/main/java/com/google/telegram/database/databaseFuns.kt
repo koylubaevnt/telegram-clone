@@ -12,9 +12,11 @@ import com.google.telegram.models.CommonModel
 import com.google.telegram.models.UserModel
 import com.google.telegram.utilits.APP_ACTIVITY
 import com.google.telegram.utilits.AppValueEventListener
+import com.google.telegram.utilits.TYPE_GROUP
 import com.google.telegram.utilits.showToast
 import java.io.File
 import java.util.ArrayList
+import java.util.HashMap
 
 fun initFirebase() {
     AUTH =
@@ -337,6 +339,7 @@ fun createGroupToDatabase(
     val mapData = hashMapOf<String, Any>()
     mapData[CHILD_ID] = keyGroup
     mapData[CHILD_FULL_NAME] = nameGroup
+    mapData[CHILD_PHOTO_URL] = "empty"
 
     val mapMembers = hashMapOf<String, Any>()
     listContacts.forEach {
@@ -351,12 +354,38 @@ fun createGroupToDatabase(
             if (uri != Uri.EMPTY) {
                 putFileToStorage(uri, pathStorage) {
                     getUrlFromStorage(pathStorage) {
-                        path.child(CHILD_FILE_URL).setValue(it)
+                        path.child(CHILD_PHOTO_URL).setValue(it)
+                        addGroupToMainList(mapData, listContacts) {
+                            function()
+                        }
                     }
                 }
+            } else {
+                addGroupToMainList(mapData, listContacts) {
+                    function()
+                }
             }
-            function()
         }
+        .addOnFailureListener { showToast(it.message.toString()) }
+}
+
+fun addGroupToMainList(
+    mapData: HashMap<String, Any>,
+    listContacts: List<CommonModel>,
+    function: () -> Unit
+) {
+    val path = REF_DATABASE_ROOT.child(NODE_MAIN_LIST)
+    val map = hashMapOf<String, Any>()
+
+    map[CHILD_ID] = mapData[CHILD_ID].toString()
+    map[CHILD_TYPE] = TYPE_GROUP
+
+    listContacts.forEach {
+        path.child(it.id).child(map[CHILD_ID].toString()).updateChildren(map)
+    }
+
+    path.child(CURRENT_UID).child(map[CHILD_ID].toString()).updateChildren(map)
+        .addOnSuccessListener { function() }
         .addOnFailureListener { showToast(it.message.toString()) }
 }
 

@@ -5,9 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.telegram.R
 import com.google.telegram.database.*
 import com.google.telegram.models.CommonModel
-import com.google.telegram.utilits.APP_ACTIVITY
-import com.google.telegram.utilits.AppValueEventListener
-import com.google.telegram.utilits.hideKeyboard
+import com.google.telegram.utilits.*
 import kotlinx.android.synthetic.main.fragment_main_list.*
 
 class MainListFragment : Fragment(R.layout.fragment_main_list) {
@@ -37,21 +35,49 @@ class MainListFragment : Fragment(R.layout.fragment_main_list) {
         mRefMainList.addListenerForSingleValueEvent(AppValueEventListener { mainListDS ->
             mListItems = mainListDS.children.map { it.getCommonModel() }
             mListItems.forEach { model ->
-                mRefUsers.child(model.id)
-                    .addListenerForSingleValueEvent(AppValueEventListener { userDS ->
-                        val newModel = userDS.getCommonModel()
-                        mRefMessages.child(model.id).limitToLast(1)
-                            .addListenerForSingleValueEvent(AppValueEventListener { messageDS ->
-                                val tempList = messageDS.children.map { it.getCommonModel() }
-                                if (tempList.isNotEmpty()) {
-                                    newModel.fullname = newModel.phone
-                                }
-                                mAdapter.updateListItems(newModel)
-                            })
-                    })
+
+                when (model.type) {
+                    TYPE_CHAT -> showChat(model)
+                    TYPE_GROUP -> showGroup(model)
+
+                }
             }
         })
 
         mRecyclerView.adapter = mAdapter
+    }
+
+    private fun showGroup(model: CommonModel) {
+        REF_DATABASE_ROOT.child(NODE_GROUPS).child(model.id)
+            .addListenerForSingleValueEvent(AppValueEventListener { userDS ->
+                val newModel = userDS.getCommonModel()
+                REF_DATABASE_ROOT.child(NODE_GROUPS).child(model.id).child(NODE_MESSAGES).limitToLast(1)
+                    .addListenerForSingleValueEvent(AppValueEventListener { messageDS ->
+                        val tempList = messageDS.children.map { it.getCommonModel() }
+                        if (tempList.isNotEmpty()) {
+                            newModel.lastMessage = tempList[0].text
+                        }
+                        mAdapter.updateListItems(newModel)
+                    })
+            })
+    }
+
+    private fun showChat(model: CommonModel) {
+        mRefUsers.child(model.id)
+            .addListenerForSingleValueEvent(AppValueEventListener { userDS ->
+                val newModel = userDS.getCommonModel()
+                mRefMessages.child(model.id).limitToLast(1)
+                    .addListenerForSingleValueEvent(AppValueEventListener { messageDS ->
+                        val tempList = messageDS.children.map { it.getCommonModel() }
+                        if (tempList.isNotEmpty()) {
+                            newModel.lastMessage = tempList[0].text
+                        }
+
+                        if (newModel.fullname.isEmpty()) {
+                            newModel.fullname = newModel.phone
+                        }
+                        mAdapter.updateListItems(newModel)
+                    })
+            })
     }
 }
